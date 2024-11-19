@@ -7,6 +7,10 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 /*
+    Requerimiento 1: Solo la primera produccion es publica, el resto es privada
+    Requerimiento 2: Implementar la cerradura Epsilo
+    Requerimiento 3: Implementar la el operador OR
+    Requerimiento 4: Indentar el código
 */
 
 namespace Compilador
@@ -28,7 +32,7 @@ namespace Compilador
             lenguajecs.WriteLine("using System.Reflection.Metadata.Ecma335;");
             lenguajecs.WriteLine("using System.Runtime.InteropServices;");
             lenguajecs.WriteLine("using System.Threading.Tasks;");
-            lenguajecs.WriteLine("\nnamespace "+nspace);
+            lenguajecs.WriteLine("\nnamespace " + nspace);
             lenguajecs.WriteLine("{");
             lenguajecs.WriteLine("    public class Lenguaje : Sintaxis");
             lenguajecs.WriteLine("    {");
@@ -38,7 +42,6 @@ namespace Compilador
             lenguajecs.WriteLine("        public Lenguaje(string nombre) : base(nombre)");
             lenguajecs.WriteLine("        {");
             lenguajecs.WriteLine("        }");
-            lenguajecs.WriteLine("        public void ");
         }
         public void genera()
         {
@@ -47,20 +50,68 @@ namespace Compilador
             esqueleto(getContenido());
             match(Tipos.SNT);
             match(";");
+            producciones();
             lenguajecs.WriteLine("    }");
             lenguajecs.WriteLine("}");
         }
-        private void producciones(){
-            if(getClasificacion() == Tipos.SNT){
-                lenguajecs.WriteLine("        public void "+getContenido()+"()");
-
+        private void producciones()
+        {
+            if (getClasificacion() == Tipos.SNT)
+            {
+                lenguajecs.WriteLine("        public void " + getContenido() + "()");
+                lenguajecs.WriteLine("        {");
             }
             match(Tipos.SNT);
             match(Tipos.Flecha);
+            conjuntoTokens();
             match(Tipos.FinProduccion);
-            lenguajecs.WriteLine(" }");
-            if(getClasificacion() == Tipos.SNT){
+            lenguajecs.WriteLine("        }");
+            if (getClasificacion() == Tipos.SNT)
+            {
                 producciones();
+            }
+        }
+        private void conjuntoTokens()
+        {
+            if (getClasificacion() == Tipos.SNT)
+            {
+                lenguajecs.WriteLine("            " + getContenido() + "();");
+                match(Tipos.SNT);
+            }
+            else if (getClasificacion() == Tipos.ST)
+            {
+                lenguajecs.WriteLine("            match(\"" + getContenido() + "\");");
+                match(Tipos.ST);
+            }
+            else if (getClasificacion() == Tipos.Tipo)
+            {
+                lenguajecs.WriteLine("            match(Tipos." + getContenido() + ");");
+                match(Tipos.Tipo);
+            }
+            else if (getClasificacion() == Tipos.Izquierdo)
+            {
+                match(Tipos.Izquierdo);
+                lenguajecs.Write("            if (");
+                if (getClasificacion() == Tipos.ST)
+                {
+                    lenguajecs.WriteLine("getContenido() == \"" + getContenido() + "\")");
+                    lenguajecs.WriteLine("            {");
+                    lenguajecs.WriteLine("                match(\"" + getContenido() + "\");");
+                    match(Tipos.ST);
+                }
+                else if (getClasificacion() == Tipos.Tipo)
+                {
+                    lenguajecs.WriteLine("getClasigficacion() == Tipos." + getContenido() + ")");
+                    lenguajecs.WriteLine("            {");
+                    lenguajecs.WriteLine("                match(Tipos." + getContenido() + ");");
+                    match(Tipos.Tipo);
+                }
+                match(Tipos.Derecho);
+                lenguajecs.WriteLine("            }");
+            }
+            if (getClasificacion() != Tipos.FinProduccion)
+            {
+                conjuntoTokens();
             }
         }
     }

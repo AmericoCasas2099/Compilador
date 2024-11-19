@@ -40,7 +40,7 @@ namespace Compilador
                 throw new Error("El archivo " + nombre + " no existe", log);
             }
             archivo = new StreamReader(nombre);
-            lenguajecs = new StreamWriter("Lenguaje2.cs");
+            lenguajecs = new StreamWriter("Lenguaje.cpp");
         }
         public void Dispose() // Destructor
         {
@@ -87,8 +87,8 @@ namespace Compilador
                 case 05: setClasificacion(Tipos.FinProduccion); break;
                 case 06: setClasificacion(Tipos.Epsilon); break;
                 case 07: setClasificacion(Tipos.Or); break;
-                case 08: setClasificacion(Tipos.Derecho); break;
-                case 09: setClasificacion(Tipos.Izquierdo); break;
+                case 08: setClasificacion(Tipos.Izquierdo); break;
+                case 09: setClasificacion(Tipos.Derecho); break;
 
             }
         }

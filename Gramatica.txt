@@ -1,6 +1,5 @@
 namespace : Cplusplus;
-Programa  -> Librerias; Main\;
-Main      -> static? void Main(string[] args) BloqueInstrucciones\?\;
-
-Identificador Numero Caracter
-\( \)
+Programa  -> Librerias Main\;
+Librerias -> #include <Identificador> \(  Librerias \)\? \;
+Main      -> void main() BloqueInstrucciones\;
+BloqueInstrucciones -> \;
