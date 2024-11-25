@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 /*
-    Requerimiento 1: Solo la primera produccion es publica, el resto es privada
-    Requerimiento 2: Implementar la cerradura Epsilo
-    Requerimiento 3: Implementar la el operador OR
+    Requerimiento 1: Solo la primera produccion es publica, el resto es privada 
+    Requerimiento 2: Implementar la cerradura Epsilon
+    Requerimiento 3: Implementar  el operador OR
     Requerimiento 4: Indentar el código
 */
 
@@ -17,6 +17,7 @@ namespace Compilador
 {
     public class Lenguaje : Sintaxis
     {
+        bool primera = true;
         public Lenguaje()
         {
         }
@@ -55,10 +56,15 @@ namespace Compilador
             lenguajecs.WriteLine("}");
         }
         private void producciones()
-        {
-            if (Clasificacion == Tipos.SNT)
+        { 
+            if (Clasificacion == Tipos.SNT && primera == true)
             {
                 lenguajecs.WriteLine("        public void " + Contenido + "()");
+                lenguajecs.WriteLine("        {");
+                primera = false;
+            }
+            else{
+                lenguajecs.WriteLine("        private void " + Contenido + "()");
                 lenguajecs.WriteLine("        {");
             }
             match(Tipos.SNT);

@@ -40,7 +40,7 @@ namespace Compilador
                 throw new Error("El archivo " + nombre + " no existe", log);
             }
             archivo = new StreamReader(nombre);
-            lenguajecs = new StreamWriter("Lenguaje2.cs");
+            lenguajecs = new StreamWriter("Lenguaje.cpp");
         }
         public void Dispose() // Destructor
         {
