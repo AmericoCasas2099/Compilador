@@ -47,7 +47,7 @@ namespace Compilador
         {
             match("namespace");
             match(":");
-            esqueleto(getContenido());
+            esqueleto(Contenido);
             match(Tipos.SNT);
             match(";");
             producciones();
@@ -56,9 +56,9 @@ namespace Compilador
         }
         private void producciones()
         {
-            if (getClasificacion() == Tipos.SNT)
+            if (Clasificacion == Tipos.SNT)
             {
-                lenguajecs.WriteLine("        public void " + getContenido() + "()");
+                lenguajecs.WriteLine("        public void " + Contenido + "()");
                 lenguajecs.WriteLine("        {");
             }
             match(Tipos.SNT);
@@ -66,50 +66,50 @@ namespace Compilador
             conjuntoTokens();
             match(Tipos.FinProduccion);
             lenguajecs.WriteLine("        }");
-            if (getClasificacion() == Tipos.SNT)
+            if (Clasificacion == Tipos.SNT)
             {
                 producciones();
             }
         }
         private void conjuntoTokens()
         {
-            if (getClasificacion() == Tipos.SNT)
+            if (Clasificacion == Tipos.SNT)
             {
-                lenguajecs.WriteLine("            " + getContenido() + "();");
+                lenguajecs.WriteLine("            " + Contenido + "();");
                 match(Tipos.SNT);
             }
-            else if (getClasificacion() == Tipos.ST)
+            else if (Clasificacion == Tipos.ST)
             {
-                lenguajecs.WriteLine("            match(\"" + getContenido() + "\");");
+                lenguajecs.WriteLine("            match(\"" + Contenido + "\");");
                 match(Tipos.ST);
             }
-            else if (getClasificacion() == Tipos.Tipo)
+            else if (Clasificacion == Tipos.Tipo)
             {
-                lenguajecs.WriteLine("            match(Tipos." + getContenido() + ");");
+                lenguajecs.WriteLine("            match(Tipos." + Contenido + ");");
                 match(Tipos.Tipo);
             }
-            else if (getClasificacion() == Tipos.Izquierdo)
+            else if (Clasificacion == Tipos.Izquierdo)
             {
                 match(Tipos.Izquierdo);
                 lenguajecs.Write("            if (");
-                if (getClasificacion() == Tipos.ST)
+                if (Clasificacion == Tipos.ST)
                 {
-                    lenguajecs.WriteLine("getContenido() == \"" + getContenido() + "\")");
+                    lenguajecs.WriteLine("getContenido() == \"" + Contenido + "\")");
                     lenguajecs.WriteLine("            {");
-                    lenguajecs.WriteLine("                match(\"" + getContenido() + "\");");
+                    lenguajecs.WriteLine("                match(\"" + Contenido + "\");");
                     match(Tipos.ST);
                 }
-                else if (getClasificacion() == Tipos.Tipo)
+                else if (Clasificacion == Tipos.Tipo)
                 {
-                    lenguajecs.WriteLine("getClasigficacion() == Tipos." + getContenido() + ")");
+                    lenguajecs.WriteLine("getClasificacion() == Tipos." + Contenido + ")");
                     lenguajecs.WriteLine("            {");
-                    lenguajecs.WriteLine("                match(Tipos." + getContenido() + ");");
+                    lenguajecs.WriteLine("                match(Tipos." + Contenido + ");");
                     match(Tipos.Tipo);
                 }
                 match(Tipos.Derecho);
                 lenguajecs.WriteLine("            }");
             }
-            if (getClasificacion() != Tipos.FinProduccion)
+            if (Clasificacion != Tipos.FinProduccion)
             {
                 conjuntoTokens();
             }

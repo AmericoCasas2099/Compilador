@@ -40,7 +40,7 @@ namespace Compilador
                 throw new Error("El archivo " + nombre + " no existe", log);
             }
             archivo = new StreamReader(nombre);
-            lenguajecs = new StreamWriter("Lenguaje.cpp");
+            lenguajecs = new StreamWriter("Lenguaje2.cs");
         }
         public void Dispose() // Destructor
         {
@@ -82,13 +82,13 @@ namespace Compilador
                 case 01:
                 case 02:
                 case 04:
-                case 10: setClasificacion(Tipos.ST); break;
-                case 03: setClasificacion(Tipos.Flecha); break;
-                case 05: setClasificacion(Tipos.FinProduccion); break;
-                case 06: setClasificacion(Tipos.Epsilon); break;
-                case 07: setClasificacion(Tipos.Or); break;
-                case 08: setClasificacion(Tipos.Izquierdo); break;
-                case 09: setClasificacion(Tipos.Derecho); break;
+                case 10: Clasificacion = Tipos.ST; break;
+                case 03: Clasificacion = Tipos.Flecha; break;
+                case 05: Clasificacion = Tipos.FinProduccion; break;
+                case 06: Clasificacion = Tipos.Epsilon; break;
+                case 07: Clasificacion = Tipos.Or; break;
+                case 08: Clasificacion = Tipos.Izquierdo; break;
+                case 09: Clasificacion = Tipos.Derecho; break;
 
             }
         }
@@ -118,16 +118,16 @@ namespace Compilador
                     archivo.Read();
                 }
             }
-            setContenido(buffer);
-            if (EsTipo(getContenido()))
+            Contenido = buffer;
+            if (EsTipo(Contenido))
             {
-                setClasificacion(Tipos.Tipo);
+               Clasificacion = Tipos.Tipo;
             }
-            else if (char.IsUpper(getContenido()[0]))
+            else if (char.IsUpper(Contenido[0]))
             {
-                setClasificacion(Tipos.SNT);
+                Clasificacion = Tipos.SNT;
             }
-            log.WriteLine(getContenido() + " = " + getClasificacion());
+            log.WriteLine(Contenido + " = " + Clasificacion);
         }
         private bool EsTipo(string tipo)
         {

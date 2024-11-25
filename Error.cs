@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace Sintaxis_1
+namespace Compilador
 {
     //Requerimiento: Número de linea donde se encuentra el error
     public class Error : Exception
