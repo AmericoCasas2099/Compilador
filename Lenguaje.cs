@@ -19,7 +19,7 @@ namespace Compilador
     {
         bool primeraVez = true;
         int ident = 0;
-        
+
         public Lenguaje()
         {
         }
@@ -157,7 +157,16 @@ namespace Compilador
                 lenguajecs.WriteLine("}");
             }
             else if(Clasificacion == Tipos.Or){
-                Or_Ep();
+                //Or_Ep();
+                if (Clasificacion == Tipos.SNT || Clasificacion == Tipos.ST || Clasificacion == Tipos.Tipo){
+                    ident--;
+                    lenguajecs.WriteLine("}");
+                    lenguajecs.WriteLine("else");   
+                    conjuntoTokens(true);
+                }
+                else{
+                    throw new Error("Semántico" + linea + "Se esperaba un SNT, ST o Tipo", log);
+                }
                 match(Tipos.Or);
             }
             if (Clasificacion != Tipos.FinProduccion)
