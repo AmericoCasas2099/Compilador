@@ -19,6 +19,7 @@ namespace Compilador
     {
         bool primeraVez = true;
         int ident = 0;
+        
         public Lenguaje()
         {
         }
@@ -81,7 +82,7 @@ namespace Compilador
                 lenguajecs.WriteLine("{");
                 primeraVez = false;
             }
-            else
+            else if (Clasificacion == Tipos.SNT)
             {
                 indentar();
                 lenguajecs.WriteLine("private void " + Contenido + "()");
@@ -90,16 +91,19 @@ namespace Compilador
             }
             match(Tipos.SNT);
             match(Tipos.Flecha);
-            conjuntoTokens();
+            conjuntoTokens(false);
             match(Tipos.FinProduccion);
-            lenguajecs.WriteLine("        }");
+            ident--;
+            indentar();
+            lenguajecs.WriteLine("}");
             if (Clasificacion == Tipos.SNT)
             {
                 producciones();
             }
         }
-        private void conjuntoTokens()
+        private void conjuntoTokens(bool b_Or)
         {
+            bool end = false;
             if (Clasificacion == Tipos.SNT)
             {
                 indentar();
@@ -141,19 +145,24 @@ namespace Compilador
                 match(Tipos.Derecho);
                 if (Clasificacion == Tipos.Epsilon)
                 {
-                    string tokenOpcional = Contenido.Replace("?", "");
+                    end = true; 
+                    Or_Ep();
+                    /*string tokenOpcional = Contenido.Replace("?", "");
                     lenguajecs.WriteLine("if (getContenido() == \"" + tokenOpcional + "\")");
                     lenguajecs.WriteLine("{");
                     lenguajecs.WriteLine("match(\"" + tokenOpcional + "\");");
-                    lenguajecs.WriteLine("}");
+                    lenguajecs.WriteLine("}");*/
                     match(Tipos.Epsilon);
                 }
                 lenguajecs.WriteLine("}");
             }
-
+            else if(Clasificacion == Tipos.Or){
+                Or_Ep();
+                match(Tipos.Or);
+            }
             if (Clasificacion != Tipos.FinProduccion)
             {
-                conjuntoTokens();
+                conjuntoTokens(false);
             }
         }
 
