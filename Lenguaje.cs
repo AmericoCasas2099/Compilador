@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 /*
-    Requerimiento 1: Solo la primera produccion es publica, el resto es privada 
+    Requerimiento 1: Solo la primera produccion es publica, el resto es privada  -Listo
     Requerimiento 2: Implementar la cerradura Epsilon
     Requerimiento 3: Implementar  el operador OR
     Requerimiento 4: Indentar el código
@@ -18,6 +18,7 @@ namespace Compilador
     public class Lenguaje : Sintaxis
     {
         bool primera = true;
+        int ident = 0;
         public Lenguaje()
         {
         }
@@ -35,14 +36,23 @@ namespace Compilador
             lenguajecs.WriteLine("using System.Threading.Tasks;");
             lenguajecs.WriteLine("\nnamespace " + nspace);
             lenguajecs.WriteLine("{");
-            lenguajecs.WriteLine("    public class Lenguaje : Sintaxis");
-            lenguajecs.WriteLine("    {");
-            lenguajecs.WriteLine("        public Lenguaje()");
-            lenguajecs.WriteLine("        {");
-            lenguajecs.WriteLine("        }");
-            lenguajecs.WriteLine("        public Lenguaje(string nombre) : base(nombre)");
-            lenguajecs.WriteLine("        {");
-            lenguajecs.WriteLine("        }");
+            ident++;
+            indentar();
+            lenguajecs.WriteLine("public class Lenguaje : Sintaxis");
+            indentar();
+            lenguajecs.WriteLine("{");
+            indentar();
+            lenguajecs.WriteLine("public Lenguaje()");
+            indentar();
+            lenguajecs.WriteLine("{");
+            indentar();
+            lenguajecs.WriteLine("}");
+            indentar();
+            lenguajecs.WriteLine("public Lenguaje(string nombre) : base(nombre)");
+            indentar();
+            lenguajecs.WriteLine("{");
+            indentar();
+            lenguajecs.WriteLine("}");
         }
         public void genera()
         {
@@ -51,21 +61,30 @@ namespace Compilador
             esqueleto(Contenido);
             match(Tipos.SNT);
             match(";");
+            //ident--;
+           // indentar();
             producciones();
-            lenguajecs.WriteLine("    }");
+            lenguajecs.WriteLine("}");
+            ident--;
+            indentar();
             lenguajecs.WriteLine("}");
         }
         private void producciones()
-        { 
+        {
             if (Clasificacion == Tipos.SNT && primera == true)
             {
-                lenguajecs.WriteLine("        public void " + Contenido + "()");
-                lenguajecs.WriteLine("        {");
+                indentar();
+                lenguajecs.WriteLine("public void " + Contenido + "()");
+                indentar();
+                lenguajecs.WriteLine("{");
                 primera = false;
             }
-            else{
-                lenguajecs.WriteLine("        private void " + Contenido + "()");
-                lenguajecs.WriteLine("        {");
+            else
+            {
+                indentar();
+                lenguajecs.WriteLine("private void " + Contenido + "()");
+                indentar();
+                lenguajecs.WriteLine("{");
             }
             match(Tipos.SNT);
             match(Tipos.Flecha);
@@ -81,44 +100,68 @@ namespace Compilador
         {
             if (Clasificacion == Tipos.SNT)
             {
+                indentar();
                 lenguajecs.WriteLine("            " + Contenido + "();");
                 match(Tipos.SNT);
             }
             else if (Clasificacion == Tipos.ST)
             {
-                lenguajecs.WriteLine("            match(\"" + Contenido + "\");");
+                indentar();
+                lenguajecs.WriteLine("match(\"" + Contenido + "\");");
                 match(Tipos.ST);
             }
             else if (Clasificacion == Tipos.Tipo)
             {
-                lenguajecs.WriteLine("            match(Tipos." + Contenido + ");");
+                indentar();
+                lenguajecs.WriteLine("match(Tipos." + Contenido + ");");
                 match(Tipos.Tipo);
             }
             else if (Clasificacion == Tipos.Izquierdo)
-            {
+            {   
                 match(Tipos.Izquierdo);
-                lenguajecs.Write("            if (");
+                indentar();
+                lenguajecs.Write("if (");
                 if (Clasificacion == Tipos.ST)
                 {
                     lenguajecs.WriteLine("getContenido() == \"" + Contenido + "\")");
-                    lenguajecs.WriteLine("            {");
-                    lenguajecs.WriteLine("                match(\"" + Contenido + "\");");
+                    lenguajecs.WriteLine("{");
+                    lenguajecs.WriteLine("match(\"" + Contenido + "\");");
                     match(Tipos.ST);
                 }
                 else if (Clasificacion == Tipos.Tipo)
                 {
                     lenguajecs.WriteLine("getClasificacion() == Tipos." + Contenido + ")");
-                    lenguajecs.WriteLine("            {");
-                    lenguajecs.WriteLine("                match(Tipos." + Contenido + ");");
+                    lenguajecs.WriteLine("{");
+                    lenguajecs.WriteLine("match(Tipos." + Contenido + ");");
                     match(Tipos.Tipo);
                 }
+
                 match(Tipos.Derecho);
-                lenguajecs.WriteLine("            }");
+                if (Clasificacion == Tipos.Epsilon)
+            {
+                string tokenOpcional = Contenido.Replace("?", "");
+                lenguajecs.WriteLine("if (getContenido() == \"" + tokenOpcional + "\")");
+                lenguajecs.WriteLine("{");
+                lenguajecs.WriteLine("match(\"" + tokenOpcional + "\");");
+                lenguajecs.WriteLine("}");
+                match(Tipos.Epsilon);
             }
+                lenguajecs.WriteLine("}");
+            }
+            
             if (Clasificacion != Tipos.FinProduccion)
             {
                 conjuntoTokens();
             }
         }
+
+        private void indentar()
+        {
+            for (int i = 0; i < ident; i++)
+            {
+                lenguajecs.Write("\t");
+            }
+                
+            }
+        }
     }
-}

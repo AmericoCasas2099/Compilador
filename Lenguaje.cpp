@@ -8,24 +8,24 @@ using System.Threading.Tasks;
 
 namespace Cplusplus
 {
-    public class Lenguaje : Sintaxis
-    {
-        public Lenguaje()
-        {
+	public class Lenguaje : Sintaxis
+	{
+	public Lenguaje()
+	{
+	}
+	public Lenguaje(string nombre) : base(nombre)
+	{
+	}
+	public void Programa()
+	{
+	            Librerias();
+	            Main();
         }
-        public Lenguaje(string nombre) : base(nombre)
-        {
-        }
-        public void Programa()
-        {
-            Librerias();
-            Main();
-        }
-        private void Librerias()
-        {
-            match("#");
-            match("include");
-            match("<");
-            match(Tipos.Identificador);
-            match(">");
-            if (
+	private void Librerias()
+	{
+	match("#");
+	match("include");
+	match("<");
+	match(Tipos.Identificador);
+	match(">");
+	if (
