@@ -7,17 +7,17 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 /*
-    Requerimiento 1: Solo la primera produccion es publica, el resto es privada  -Listo
+    Requerimiento 1: Solo la primeraVez produccion es publica, el resto es privada  -Listo
     Requerimiento 2: Implementar la cerradura Epsilon
-    Requerimiento 3: Implementar  el operador OR
-    Requerimiento 4: Indentar el código
+    Requerimiento 3: Implementar  el operador OR                                    -?
+    Requerimiento 4: Indentar el código                                              -Ya casi
 */
 
 namespace Compilador
 {
     public class Lenguaje : Sintaxis
     {
-        bool primera = true;
+        bool primeraVez = true;
         int ident = 0;
         public Lenguaje()
         {
@@ -38,9 +38,11 @@ namespace Compilador
             lenguajecs.WriteLine("{");
             ident++;
             indentar();
+            indentar();
             lenguajecs.WriteLine("public class Lenguaje : Sintaxis");
             indentar();
             lenguajecs.WriteLine("{");
+            ident++;
             indentar();
             lenguajecs.WriteLine("public Lenguaje()");
             indentar();
@@ -62,7 +64,7 @@ namespace Compilador
             match(Tipos.SNT);
             match(";");
             //ident--;
-           // indentar();
+            // indentar();
             producciones();
             lenguajecs.WriteLine("}");
             ident--;
@@ -71,13 +73,13 @@ namespace Compilador
         }
         private void producciones()
         {
-            if (Clasificacion == Tipos.SNT && primera == true)
+            if (Clasificacion == Tipos.SNT && primeraVez == true)
             {
                 indentar();
                 lenguajecs.WriteLine("public void " + Contenido + "()");
                 indentar();
                 lenguajecs.WriteLine("{");
-                primera = false;
+                primeraVez = false;
             }
             else
             {
@@ -117,7 +119,7 @@ namespace Compilador
                 match(Tipos.Tipo);
             }
             else if (Clasificacion == Tipos.Izquierdo)
-            {   
+            {
                 match(Tipos.Izquierdo);
                 indentar();
                 lenguajecs.Write("if (");
@@ -138,17 +140,17 @@ namespace Compilador
 
                 match(Tipos.Derecho);
                 if (Clasificacion == Tipos.Epsilon)
-            {
-                string tokenOpcional = Contenido.Replace("?", "");
-                lenguajecs.WriteLine("if (getContenido() == \"" + tokenOpcional + "\")");
-                lenguajecs.WriteLine("{");
-                lenguajecs.WriteLine("match(\"" + tokenOpcional + "\");");
+                {
+                    string tokenOpcional = Contenido.Replace("?", "");
+                    lenguajecs.WriteLine("if (getContenido() == \"" + tokenOpcional + "\")");
+                    lenguajecs.WriteLine("{");
+                    lenguajecs.WriteLine("match(\"" + tokenOpcional + "\");");
+                    lenguajecs.WriteLine("}");
+                    match(Tipos.Epsilon);
+                }
                 lenguajecs.WriteLine("}");
-                match(Tipos.Epsilon);
             }
-                lenguajecs.WriteLine("}");
-            }
-            
+
             if (Clasificacion != Tipos.FinProduccion)
             {
                 conjuntoTokens();
@@ -161,7 +163,40 @@ namespace Compilador
             {
                 lenguajecs.Write("\t");
             }
-                
+
+        }
+        private void Or_Ep()
+        {
+            List<Token> listaTokensOp = new List<Token>();
+            match(Tipos.Izquierdo);
+            while (Clasificacion != Tipos.Derecho)
+            {
+                if (Clasificacion == Tipos.ST)
+                {
+                    listaTokensOp.Add(new Token(Clasificacion, Contenido));
+                    match(Tipos.ST);
+                }
+                else if (Clasificacion == Tipos.SNT)
+                {
+                    listaTokensOp.Add(new Token(Clasificacion, Contenido));
+                    match(Tipos.SNT);
+                }
+                else if (Clasificacion == Tipos.Tipo)
+                {
+                    listaTokensOp.Add(new Token(Clasificacion, Contenido));
+                    match(Tipos.Tipo);
+                }
+                else if (Clasificacion == Tipos.Or)
+                {
+                    listaTokensOp.Add(new Token(Clasificacion,Contenido));
+                    match(Tipos.Or);
+                }
+                else
+                {
+                    Or_Ep();
+                }
             }
+
         }
     }
+}

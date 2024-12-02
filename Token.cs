@@ -25,6 +25,12 @@ namespace Compilador
         {
             contenido = "";
         }
+        public Token(Tipos clasificacion,string contenido)
+        {
+            this.contenido = contenido;
+            this.clasificacion = clasificacion;
+        }
+ 
      public string Contenido
         {get ;set;}
         public Tipos Clasificacion
