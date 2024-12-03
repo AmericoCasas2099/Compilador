@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Americo\\Documents\\Repositorios\\Compilador\\Compilador.csproj": {}
+    "C:\\Users\\kazel\\OneDrive\\Documentos\\TEC\\5to semestre\\Automatas II\\Compilador\\Compilador.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Americo\\Documents\\Repositorios\\Compilador\\Compilador.csproj": {
+    "C:\\Users\\kazel\\OneDrive\\Documentos\\TEC\\5to semestre\\Automatas II\\Compilador\\Compilador.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Americo\\Documents\\Repositorios\\Compilador\\Compilador.csproj",
+        "projectUniqueName": "C:\\Users\\kazel\\OneDrive\\Documentos\\TEC\\5to semestre\\Automatas II\\Compilador\\Compilador.csproj",
         "projectName": "Compilador",
-        "projectPath": "C:\\Users\\Americo\\Documents\\Repositorios\\Compilador\\Compilador.csproj",
-        "packagesPath": "C:\\Users\\Americo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Americo\\Documents\\Repositorios\\Compilador\\obj\\",
+        "projectPath": "C:\\Users\\kazel\\OneDrive\\Documentos\\TEC\\5to semestre\\Automatas II\\Compilador\\Compilador.csproj",
+        "packagesPath": "C:\\Users\\kazel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kazel\\OneDrive\\Documentos\\TEC\\5to semestre\\Automatas II\\Compilador\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Americo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\kazel\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
