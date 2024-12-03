@@ -25,6 +25,22 @@ namespace Lenguaje
 	private void A()
 	{
 	            C();
-	if (getClasificacion() == Tipos.Numero)
-{
-match(Tipos.Numero);
+	if (
+}
+	if (
+}
+	if (
+}
+	if (
+}
+	if (
+}
+	if (
+}
+	if (
+}
+	if (
+}
+	if (
+}
+	

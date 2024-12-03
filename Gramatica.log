@@ -12,6 +12,3 @@ A = SNT
 -> = Flecha
 C = SNT
 \( = Izquierdo
-Numero = Tipo
-\| = Or
-Error: Sintaxis: se espera un Derecho en la línea 3
