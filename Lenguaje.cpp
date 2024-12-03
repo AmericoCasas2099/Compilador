@@ -9,63 +9,58 @@ using System.Threading.Tasks;
 namespace Lenguaje
 {
 		public class Lenguaje : Sintaxis
-	{
-		public Lenguaje()
 		{
-		}
-		public Lenguaje(string nombre) : base(nombre)
-		{
-		}
-		public void Programa()
-		{
+			public Lenguaje()
+			{
+			}
+			public Lenguaje(string nombre) : base(nombre)
+			{
+			}
+			public void Programa()
+			{
 A();
 match("b");
 C();
-		}
-		private void A()
-		{
+			}
+			private void A()
+			{
 C();
-		if (
-Clasificacion == Tipos.Numero)
+			if (Clasificacion == Tipos.Numero)
 {
 match(Tipos.Numero);
 }
-else 
-if (
+			else if (
 Contenido == "a")
 {
-			match("a");
+				match("a");
 A();
-}
-else 
+			}
+			else 
 
 {
-			B()
+				B()
 }
 D();
-	}
-	private void C()
-	{
+		}
+		private void C()
+		{
 D();
-	if (
-Contenido == "a")
+		if (Contenido == "a")
 {
 match("a");
 }
-else 
-if (
+		else if (
 Contenido == "b")
 {
 match("b");
 }
-else 
-
+		else 
 {
-		D()
+			D()
 }
-}
-private void D()
-{
+	}
+	private void D()
+	{
 }
 }
 }

@@ -46,6 +46,7 @@ namespace Compilador
             indentar();
             indentar();
             lenguajecs.WriteLine("public class Lenguaje : Sintaxis");
+            ident++;
             indentar();
             lenguajecs.WriteLine("{");
             ident++;
@@ -73,8 +74,10 @@ namespace Compilador
             match(";");
             producciones();
             ident--;
+            indentar();
             lenguajecs.WriteLine("}");
             ident--;
+            indentar();
             lenguajecs.WriteLine("}");
         }
 
@@ -100,7 +103,7 @@ namespace Compilador
             match(Tipos.Flecha);
             conjuntoTokens(false);
             match(Tipos.FinProduccion);
-
+           // indentar();
             ident--;
             indentar();
             lenguajecs.WriteLine("}");
@@ -120,11 +123,11 @@ namespace Compilador
             if (Clasificacion == Tipos.Izquierdo || b_Or == true)
             {
                 bool generaCond;
-                if (b_Or == false)
+                if (!b_Or)
                 {
                     indentar();
                     match(Tipos.Izquierdo);
-                    lenguajecs.WriteLine("if (");
+                    lenguajecs.Write("if (");
                     generaCond = true;
                     tipoT = Clasificacion;
                     contenidoT = Contenido;
@@ -143,7 +146,7 @@ namespace Compilador
                     }
                     else
                     {
-                        throw new Error(" Semantico, Linea " + linea + ": Se espera un sentencia", log);
+                        throw new Error(" Semantico, Linea " + linea + ": Se espera una sentencia", log);
                     }
 
                 }
@@ -170,6 +173,7 @@ namespace Compilador
 
                     if (Clasificacion != Tipos.Derecho)
                     {
+                        //indentar();
                         lenguajecs.WriteLine("if (");
                         generaCond = true;
                     }
@@ -244,7 +248,8 @@ namespace Compilador
                         {
                             ident--;
                             lenguajecs.WriteLine("}");
-                            lenguajecs.WriteLine("else ");
+                            indentar();
+                            lenguajecs.Write("else ");
 
                             conjuntoTokens(true);
                         }
@@ -314,7 +319,9 @@ namespace Compilador
                 if (Clasificacion == Tipos.SNT || Clasificacion == Tipos.ST || Clasificacion == Tipos.Tipo)
                 {
                     ident--;
+                    indentar();
                     lenguajecs.WriteLine("}");
+                    indentar();
                     lenguajecs.WriteLine("else ");
 
                     conjuntoTokens(true);
@@ -341,33 +348,6 @@ namespace Compilador
         private void Or_Ep(){
         List<Token> listaTokensOp = new List<Token>();
         match(Tipos.Izquierdo);
-        while (Clasificacion != Tipos.Derecho)
-            {
-                if (Clasificacion == Tipos.ST)
-                {
-                    listaTokensOp.Add(new Token(Clasificacion, Contenido));
-                    match(Tipos.ST);
-                }
-                else if (Clasificacion == Tipos.SNT)
-                {
-                    listaTokensOp.Add(new Token(Clasificacion, Contenido));
-                    match(Tipos.SNT);
-                }
-                else if (Clasificacion == Tipos.Tipo)
-                {
-                    listaTokensOp.Add(new Token(Clasificacion, Contenido));
-                    match(Tipos.Tipo);
-                }
-                else if (Clasificacion == Tipos.Or)
-                {
-                    listaTokensOp.Add(new Token(Clasificacion, Contenido));
-                    match(Tipos.Or);
-                }
-                else
-                {
-                    Or_Ep();
-                }
-            }
         }
     }
 }
