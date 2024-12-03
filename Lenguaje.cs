@@ -18,7 +18,10 @@ namespace Compilador
 {
     public class Lenguaje : Sintaxis
     {
-
+        Tipos tipoT;
+        bool generaCond;
+        String contenidoT;
+        bool end;
         bool primeraVez = true;
         int ident = 0;
 
@@ -98,12 +101,13 @@ namespace Compilador
                 lenguajecs.WriteLine("private void " + Contenido + "()");
                 indentar();
                 lenguajecs.WriteLine("{");
+                ident++;
             }
             match(Tipos.SNT);
             match(Tipos.Flecha);
             conjuntoTokens(false);
             match(Tipos.FinProduccion);
-           // indentar();
+            // indentar();
             ident--;
             indentar();
             lenguajecs.WriteLine("}");
@@ -114,131 +118,142 @@ namespace Compilador
             }
 
         }
-
-        private void conjuntoTokens(bool b_Or)
+        private void CondInic(bool b_Or)
         {
-            Tipos tipoT;
-            String contenidoT;
-            bool end = false;
-            if (Clasificacion == Tipos.Izquierdo || b_Or == true)
+            bool generaCond;
+            if (!b_Or)
             {
-                bool generaCond;
-                if (!b_Or)
+                indentar();
+                match(Tipos.Izquierdo);
+                lenguajecs.Write("if (");
+                generaCond = true;
+                tipoT = Clasificacion;
+                contenidoT = Contenido;
+
+                /* if (Clasificacion == Tipos.SNT)
+                 {
+                     throw new Error(" Semantico, Linea " + linea + ": No puede haber un SNT", log);
+                 }*/
+                if (Clasificacion == Tipos.ST)
                 {
-                    indentar();
-                    match(Tipos.Izquierdo);
-                    lenguajecs.Write("if (");
-                    generaCond = true;
-                    tipoT = Clasificacion;
-                    contenidoT = Contenido;
-
-                    if (Clasificacion == Tipos.SNT)
-                    {
-                        throw new Error(" Semantico, Linea " + linea + ": No puede haber un SNT", log);
-                    }
-                    else if (Clasificacion == Tipos.ST)
-                    {
-                        match(Tipos.ST);
-                    }
-                    else if (Clasificacion == Tipos.Tipo)
-                    {
-                        match(Tipos.Tipo);
-                    }
-                    else
-                    {
-                        throw new Error(" Semantico, Linea " + linea + ": Se espera una sentencia", log);
-                    }
-
+                    match(Tipos.ST);
+                }
+                else if (Clasificacion == Tipos.Tipo)
+                {
+                    match(Tipos.Tipo);
                 }
                 else
                 {
-                    tipoT = Clasificacion;
-                    contenidoT = Contenido;
-                    if (Clasificacion == Tipos.SNT)
-                    {
-                        match(Tipos.SNT);
-                    }
-                    else if (Clasificacion == Tipos.ST)
-                    {
-                        match(Tipos.ST);
-                    }
-                    else if (Clasificacion == Tipos.Tipo)
-                    {
-                        match(Tipos.Tipo);
-                    }
-                    else
-                    {
-                        throw new Error(" Semantico, Linea " + linea + ": Se espera un sentencia", log);
-                    }
+                    throw new Error(" Semantico, Linea " + linea + ": Se espera una sentencia", log);
+                }
 
-                    if (Clasificacion != Tipos.Derecho)
+            }
+            else
+            {
+                tipoT = Clasificacion;
+                contenidoT = Contenido;
+                if (Clasificacion == Tipos.SNT)
+                {
+                    match(Tipos.SNT);
+                }
+                else if (Clasificacion == Tipos.ST)
+                {
+                    match(Tipos.ST);
+                }
+                else if (Clasificacion == Tipos.Tipo)
+                {
+                    match(Tipos.Tipo);
+                }
+                else
+                {
+                    throw new Error(" Semantico, Linea " + linea + ": Se espera un sentencia", log);
+                }
+
+                if (Clasificacion != Tipos.Derecho)
+                {
+                    //indentar();
+                    lenguajecs.Write("if (");
+                    generaCond = true;
+                }
+                else
+                {
+                    match(Tipos.Derecho);
+                    if (Clasificacion == Tipos.Epsilon)
                     {
-                        //indentar();
-                        lenguajecs.WriteLine("if (");
+                        match(Tipos.Epsilon);
+                        lenguajecs.Write("if (");
                         generaCond = true;
+                        end = true;
                     }
                     else
                     {
-                        match(Tipos.Derecho);
-                        if (Clasificacion == Tipos.Epsilon)
+                        if (tipoT == Tipos.SNT)
                         {
-                            match(Tipos.Epsilon);
-                            lenguajecs.WriteLine("if (");
-                            generaCond = true;
-                            end = true;
+                            //lenguajecs.WriteLine("");
+                            indentar();
+                            lenguajecs.WriteLine("{");
+                            ident++;
+                            indentar();
+                            lenguajecs.WriteLine(contenidoT + "()");
+                        }
+                        else if (tipoT == Tipos.ST)
+                        {
+                            indentar();
+                            lenguajecs.WriteLine("{");
+                            ident++;
+                            indentar();
+                            lenguajecs.WriteLine("match(\"" + contenidoT + "\");");
                         }
                         else
                         {
-
-                            if (tipoT == Tipos.SNT)
-                            {
-                                lenguajecs.WriteLine("");
-                                lenguajecs.WriteLine("{");
-                                ident++;
-                                indentar();
-                                lenguajecs.WriteLine(contenidoT + "()");
-                            }
-                            else if (tipoT == Tipos.ST)
-                            {
-                                lenguajecs.WriteLine("{");
-                                ident++;
-                                lenguajecs.WriteLine("match(\"" + contenidoT + "\");");
-                            }
-                            else
-                            {
-                                lenguajecs.WriteLine("{");
-                                ident++;
-                                lenguajecs.WriteLine("match(Tipos." + contenidoT + ");");
-                            }
-                            generaCond = false;
-                            ident--;
-                            lenguajecs.WriteLine("}");
-
+                            indentar();
+                            lenguajecs.WriteLine("{");
+                            ident++;
+                            indentar();
+                            lenguajecs.WriteLine("match(Tipos." + contenidoT + ");");
                         }
-                    }
+                        generaCond = false;
+                        ident--;
+                        indentar();
+                        lenguajecs.WriteLine("}");
 
+                    }
                 }
+
+            }
+        }
+        private void conjuntoTokens(bool b_Or)
+        {
+
+            bool end = false;
+            if (Clasificacion == Tipos.Izquierdo || b_Or == true)
+            {
+              CondInic(b_Or);
 
                 if ((tipoT == Tipos.SNT || tipoT == Tipos.ST || tipoT == Tipos.Tipo || tipoT == Tipos.Or) && generaCond)
                 {
                     if (Clasificacion == Tipos.Or)
                     {
-                        if (tipoT == Tipos.SNT)
+                        /*if (tipoT == Tipos.SNT)
                         {
                             throw new Error(" Semantico, Linea " + linea + ": No puede haber un SNT", log);
-                        }
-                        else if (tipoT == Tipos.ST)
+                        }*/
+                        if (tipoT == Tipos.ST)
                         {
                             lenguajecs.WriteLine("Contenido == \"" + contenidoT + "\")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
+                            indentar();
                             lenguajecs.WriteLine("match(\"" + contenidoT + "\");");
                         }
                         else if (tipoT == Tipos.Tipo)
                         {
                             lenguajecs.WriteLine("Clasificacion == Tipos." + contenidoT + ")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
+                            indentar();
                             lenguajecs.WriteLine("match(Tipos." + contenidoT + ");");
                         }
 
@@ -247,6 +262,7 @@ namespace Compilador
                         if (Clasificacion == Tipos.SNT || Clasificacion == Tipos.ST || Clasificacion == Tipos.Tipo)
                         {
                             ident--;
+                            indentar();
                             lenguajecs.WriteLine("}");
                             indentar();
                             lenguajecs.Write("else ");
@@ -268,6 +284,7 @@ namespace Compilador
                         else if (tipoT == Tipos.ST)
                         {
                             lenguajecs.WriteLine("Contenido == \"" + contenidoT + "\")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
                             indentar();
@@ -276,6 +293,7 @@ namespace Compilador
                         else if (tipoT == Tipos.Tipo)
                         {
                             lenguajecs.WriteLine("Clasificacion == Tipos." + contenidoT + ")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
                             indentar();
@@ -285,6 +303,7 @@ namespace Compilador
                         if (end)
                         {
                             ident--;
+                            indentar();
                             lenguajecs.WriteLine("}");
                         }
 
@@ -293,22 +312,26 @@ namespace Compilador
             }
             else if (Clasificacion == Tipos.ST)
             {
+                indentar();
                 lenguajecs.WriteLine("match(\"" + Contenido + "\");");
                 match(Tipos.ST);
             }
             else if (Clasificacion == Tipos.Tipo)
             {
+                indentar();
                 lenguajecs.WriteLine("match(Tipos." + Contenido + ");");
                 match(Tipos.Tipo);
             }
             else if (Clasificacion == Tipos.SNT)
             {
+                indentar();
                 lenguajecs.WriteLine(Contenido + "();");
                 match(Tipos.SNT);
             }
             else if (Clasificacion == Tipos.Derecho)
             {
                 ident--;
+                indentar();
                 lenguajecs.WriteLine("}");
                 match(Tipos.Derecho);
             }
@@ -345,9 +368,10 @@ namespace Compilador
             }
 
         }
-        private void Or_Ep(){
-        List<Token> listaTokensOp = new List<Token>();
-        match(Tipos.Izquierdo);
+        private void Or_Ep()
+        {
+            List<Token> listaTokensOp = new List<Token>();
+            match(Tipos.Izquierdo);
         }
     }
 }

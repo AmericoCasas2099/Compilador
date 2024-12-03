@@ -18,49 +18,30 @@ namespace Lenguaje
 			}
 			public void Programa()
 			{
-A();
-match("b");
-C();
+				A();
+				match("b");
+				C();
 			}
 			private void A()
 			{
-C();
-			if (Clasificacion == Tipos.Numero)
-{
-match(Tipos.Numero);
-}
-			else if (
-Contenido == "a")
-{
-				match("a");
-A();
+				C();
+				if (				A();
 			}
-			else 
-
-{
-				B()
-}
-D();
+			D();
 		}
 		private void C()
 		{
-D();
-		if (Contenido == "a")
-{
-match("a");
-}
-		else if (
-Contenido == "b")
-{
-match("b");
-}
+			D();
+			if (		}
 		else 
-{
-			D()
-}
-	}
-	private void D()
+if (	}
+	else 
 	{
+		D()
+	}
+}
+private void D()
+{
 }
 }
 }
