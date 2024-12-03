@@ -25,23 +25,40 @@ namespace Lenguaje
 			private void A()
 			{
 				C();
-				if (				A();
+				if (Clasificacion == Tipos.Numero)
+				{
+					match(Tipos.Numero);
+				}
+				else if (Contenido == "a")
+				{
+					match("a");
+					A();
+				}
+				else 
+
+				{
+					B()
+				}
+				D();
 			}
-			D();
+			private void C()
+			{
+				D();
+				if (Contenido == "a")
+				{
+					match("a");
+				}
+				else if (Contenido == "b")
+				{
+					match("b");
+				}
+				else 
+				{
+					D()
+				}
+			}
+			private void D()
+			{
+			}
 		}
-		private void C()
-		{
-			D();
-			if (		}
-		else 
-if (	}
-	else 
-	{
-		D()
 	}
-}
-private void D()
-{
-}
-}
-}
