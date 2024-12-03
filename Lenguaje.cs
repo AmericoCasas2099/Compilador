@@ -98,6 +98,7 @@ namespace Compilador
                 lenguajecs.WriteLine("private void " + Contenido + "()");
                 indentar();
                 lenguajecs.WriteLine("{");
+                ident++;
             }
             match(Tipos.SNT);
             match(Tipos.Flecha);
@@ -174,7 +175,7 @@ namespace Compilador
                     if (Clasificacion != Tipos.Derecho)
                     {
                         //indentar();
-                        lenguajecs.WriteLine("if (");
+                        lenguajecs.Write("if (");
                         generaCond = true;
                     }
                     else
@@ -183,7 +184,7 @@ namespace Compilador
                         if (Clasificacion == Tipos.Epsilon)
                         {
                             match(Tipos.Epsilon);
-                            lenguajecs.WriteLine("if (");
+                            lenguajecs.Write("if (");
                             generaCond = true;
                             end = true;
                         }
@@ -193,6 +194,7 @@ namespace Compilador
                             if (tipoT == Tipos.SNT)
                             {
                                 lenguajecs.WriteLine("");
+                                indentar();
                                 lenguajecs.WriteLine("{");
                                 ident++;
                                 indentar();
@@ -200,18 +202,23 @@ namespace Compilador
                             }
                             else if (tipoT == Tipos.ST)
                             {
+                                indentar();
                                 lenguajecs.WriteLine("{");
                                 ident++;
+                                indentar();
                                 lenguajecs.WriteLine("match(\"" + contenidoT + "\");");
                             }
                             else
                             {
+                                indentar();
                                 lenguajecs.WriteLine("{");
                                 ident++;
+                                indentar();
                                 lenguajecs.WriteLine("match(Tipos." + contenidoT + ");");
                             }
                             generaCond = false;
                             ident--;
+                            indentar();
                             lenguajecs.WriteLine("}");
 
                         }
@@ -230,15 +237,19 @@ namespace Compilador
                         else if (tipoT == Tipos.ST)
                         {
                             lenguajecs.WriteLine("Contenido == \"" + contenidoT + "\")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
+                            indentar();
                             lenguajecs.WriteLine("match(\"" + contenidoT + "\");");
                         }
                         else if (tipoT == Tipos.Tipo)
                         {
                             lenguajecs.WriteLine("Clasificacion == Tipos." + contenidoT + ")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
+                            indentar();
                             lenguajecs.WriteLine("match(Tipos." + contenidoT + ");");
                         }
 
@@ -247,6 +258,7 @@ namespace Compilador
                         if (Clasificacion == Tipos.SNT || Clasificacion == Tipos.ST || Clasificacion == Tipos.Tipo)
                         {
                             ident--;
+                            indentar();
                             lenguajecs.WriteLine("}");
                             indentar();
                             lenguajecs.Write("else ");
@@ -268,6 +280,7 @@ namespace Compilador
                         else if (tipoT == Tipos.ST)
                         {
                             lenguajecs.WriteLine("Contenido == \"" + contenidoT + "\")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
                             indentar();
@@ -276,6 +289,7 @@ namespace Compilador
                         else if (tipoT == Tipos.Tipo)
                         {
                             lenguajecs.WriteLine("Clasificacion == Tipos." + contenidoT + ")");
+                            indentar();
                             lenguajecs.WriteLine("{");
                             ident++;
                             indentar();
@@ -285,6 +299,7 @@ namespace Compilador
                         if (end)
                         {
                             ident--;
+                            indentar();
                             lenguajecs.WriteLine("}");
                         }
 
@@ -293,22 +308,26 @@ namespace Compilador
             }
             else if (Clasificacion == Tipos.ST)
             {
+                indentar();
                 lenguajecs.WriteLine("match(\"" + Contenido + "\");");
                 match(Tipos.ST);
             }
             else if (Clasificacion == Tipos.Tipo)
             {
+                indentar();
                 lenguajecs.WriteLine("match(Tipos." + Contenido + ");");
                 match(Tipos.Tipo);
             }
             else if (Clasificacion == Tipos.SNT)
             {
+                indentar();
                 lenguajecs.WriteLine(Contenido + "();");
                 match(Tipos.SNT);
             }
             else if (Clasificacion == Tipos.Derecho)
             {
                 ident--;
+                indentar();
                 lenguajecs.WriteLine("}");
                 match(Tipos.Derecho);
             }
