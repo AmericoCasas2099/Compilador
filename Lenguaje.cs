@@ -114,7 +114,6 @@ namespace Compilador
             }
 
         }
-
         private void condInic(bool b_Or)
         {
             Tipos tipoT;
