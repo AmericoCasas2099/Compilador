@@ -28,16 +28,9 @@ namespace Lenguaje
 				if (Clasificacion == Tipos.Numero)
 				{
 					match(Tipos.Numero);
-				}
-				else if (Contenido == "a")
-				{
-					match("a");
-					A();
-				}
-				else 
-
-				{
-					B()
+					match("b");
+					C();
+					D();
 				}
 				D();
 			}
