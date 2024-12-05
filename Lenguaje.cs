@@ -353,6 +353,22 @@ namespace Compilador
                     throw new Error(" Semantico, Linea " + linea + ": Se espera un sentencia", log);
                 }
             }
+            if (Clasificacion == Tipos.Epsilon)
+            {
+                match(Tipos.Epsilon);
+                condInic(false);
+
+                /*
+                indentar();
+                lenguajecs.WriteLine("if (");
+                indentar();
+                lenguajecs.WriteLine("{");
+                ident++;
+                conjuntoTokens(false); 
+                ident--;
+                indentar();
+                lenguajecs.WriteLine("}");*/
+            }
             if (Clasificacion != Tipos.FinProduccion)
             {
                 conjuntoTokens(false);
