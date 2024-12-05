@@ -47,11 +47,19 @@ namespace Lenguaje
 				}
 				else 
 				{
-					D()
+					D();
 				}
 			}
 			private void D()
 			{
+				if (Contenido == "j")
+				{
+					match("j");
+				}
+				else 
+				{
+					D();
+				}
 			}
 		}
 	}

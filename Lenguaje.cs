@@ -197,7 +197,7 @@ namespace Compilador
                                 lenguajecs.WriteLine("{");
                                 ident++;
                                 indentar();
-                                lenguajecs.WriteLine(contenidoT + "()");
+                                lenguajecs.WriteLine(contenidoT + "();");
                             }
                             else if (tipoT == Tipos.ST)
                             {
